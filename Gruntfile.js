@@ -1,0 +1,57 @@
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+    watch: {
+      less: {
+        files: ['example/*.less'],
+        tasks: ['less']
+      },
+      js: {
+        files: ['jq-iframe.js'],
+        tasks: ['uglify']
+      }
+    },
+    browserSync: {
+      bsFiles: {
+        src: ['*.css', '*.js', 'example/*.html', 'example/*.js', 'example/*.css']
+      },
+      options: {
+        server: './',
+        browser: 'chrome',
+        index: './example/index.html',
+        watchTask: true
+      }
+    },
+    less: {
+      'example/styles.css': ['example/*.less']
+    },
+    uglify: {
+      nonMin: {
+        options: {
+          compress: false,
+          beautify: true
+        },
+        files: [{
+          'dist/iframeEmulator.js': ['iframeEmulator.js']
+        }]
+      },
+      min: {
+        options: {
+          mangle: true,
+          sourceMap: true
+        },
+        files: {
+          'dist/iframeEmulator.min.js': ['iframeEmulator.js']
+        }
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-browser-sync');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.registerTask('default', ['browserSync', 'watch']);
+  grunt.registerTask('build', ['less', 'uglify']);
+
+};

@@ -1,0 +1,79 @@
+body {
+  padding: 0 25px;
+}
+.predefines {
+  text-align: right;
+  float: right;
+}
+.btn {
+  margin: 0 0 10px 10px;
+}
+.options {
+  clear: both;
+  min-height: 70px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 50;
+}
+a.toggle {
+  float: left;
+}
+a.ifem-grid:not(.ifem-grid-active),
+a[data-ifem-pre-active=false],
+a.iframe-toggle.iframe-toggle-disabled {
+  color: grey;
+  background: rgba(128, 128, 128, 0.16);
+  border: 1px solid rgba(128, 128, 128, 0.12);
+}
+a.ifem-grid:not(.ifem-grid-active):hover,
+a[data-ifem-pre-active=false]:hover,
+a.iframe-toggle.iframe-toggle-disabled:hover {
+  color: grey;
+  background: rgba(128, 128, 128, 0.25);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+a.iframe-toggle.iframe-toggle-disabled + .predefines {
+  display: none;
+}
+a:focus,
+a:active {
+  box-shadow: none !important;
+}
+body:not(.ifem-active) a[data-ifem-view] {
+  color: grey;
+  background: rgba(128, 128, 128, 0.16);
+  border: 1px solid rgba(128, 128, 128, 0.12);
+}
+body:not(.ifem-active) a[data-ifem-view]:hover {
+  color: grey;
+  background: rgba(128, 128, 128, 0.25);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+body:not(.ifem-active) a[data-ifem-view] + .predefines {
+  display: none;
+}
+body.ifem-grid-view .patterns {
+  display: flex;
+  flex-wrap: wrap;
+}
+body.ifem-grid-view .patterns .pattern {
+  flex-shrink: 0;
+  margin: 10px;
+}
+.iframe {
+  background: #e6e6e6;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+}
+body.ifem-active .iframe {
+  resize: both;
+  overflow: auto;
+  height: 350px;
+  clear: both;
+  max-width: 100%;
+  overflow: scroll;
+  margin-bottom: 40px;
+}
