@@ -1,16 +1,16 @@
 (function(c, e, r, a) {
     var o = "iframeEmulator", i = {
-        containerSelector: ".ifem-iframe",
-        classPrefix: "ifem",
+        containerSelector: ".ifr-iframe",
+        classPrefix: "ifr",
         stylesheetClass: false,
-        bodyClass: "ifem-active"
+        bodyClass: "ifr-active"
     }, y = {
         breakpoints: {},
         hasSetBreakpoints: false,
         mediaQueryRules: false,
         iframes: [],
         stylesheets: [],
-        styleClass: "ifem-styles",
+        styleClass: "ifr-styles",
         styleElement: [],
         eventNameSpace: "plugin_" + o,
         plugin: false,
@@ -43,16 +43,17 @@
             y.plugin = s;
             y.pluginElement = this.$element;
             var a = r.styleSheets;
+            var n = a;
             if (s.options.stylesheetClass) {
-                var n = s.options.stylesheetClass;
-                var l = c.map(a, function(e, t) {
+                var l = s.options.stylesheetClass;
+                n = c.map(a, function(e, t) {
                     var i = c(e.ownerNode);
-                    if (i.hasClass(n)) {
+                    if (i.hasClass(l)) {
                         return e;
                     }
                 });
-                y.stylesheets = l;
             }
+            y.stylesheets = n;
             s.setMediaQueries(s);
             c.each(y.iframes, function(e, t) {
                 var i = c(t);

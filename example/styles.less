@@ -26,7 +26,7 @@ a.toggle {
 }
 
 a {
-    &.ifem-grid:not(.ifem-grid-active), &[data-ifem-pre-active=false], &.iframe-toggle.iframe-toggle-disabled {
+    &.ifr-grid:not(.ifr-grid-active), &[data-ifr-pre-active=false], &.iframe-toggle.iframe-toggle-disabled {
       color: grey;
       background: fade(grey, 16%);
       border: 1px solid fade(grey, 12%);
@@ -46,8 +46,8 @@ a {
   }
 }
 
-body:not(.ifem-active) {
-  a[data-ifem-view] {
+body:not(.ifr-active) {
+  a[data-ifr-view] {
     color: grey;
     background: fade(grey, 16%);
     border: 1px solid fade(grey, 12%);
@@ -62,7 +62,7 @@ body:not(.ifem-active) {
   }
 }
 
-body.ifem-grid-view {
+body.ifr-grid-view {
   .patterns {
     display: flex;
     flex-wrap: wrap;
@@ -77,7 +77,7 @@ body.ifem-grid-view {
   background: tint(grey, 80%);
   border: 1px solid tint(grey, 80%);
   padding: 10px;
-  body.ifem-active & {
+  body.ifr-active & {
     resize: both;
     overflow: auto;
     height: 350px;

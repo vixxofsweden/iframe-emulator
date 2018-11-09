@@ -1,4 +1,4 @@
-# iframe-emulator
+# iframeify
 Use a div to display responsive patterns like you would inside an iframe
 
 ## Currently works with the following types of media queries:

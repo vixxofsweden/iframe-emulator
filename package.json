@@ -1,8 +1,8 @@
 {
-  "name": "iframe-emulator",
+  "name": "iframeify",
   "version": "0.0.1",
   "description": "",
-  "main": "iframe.js",
+  "main": "dist/iframeify.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

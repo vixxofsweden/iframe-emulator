@@ -32,7 +32,7 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: [{
-          'dist/iframeEmulator.js': ['iframeEmulator.js']
+          'dist/iframeify.js': ['iframeify.js']
         }]
       },
       min: {
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'dist/iframeEmulator.min.js': ['iframeEmulator.js']
+          'dist/iframeify.min.js': ['iframeify.js']
         }
       }
     }

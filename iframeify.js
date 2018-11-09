@@ -2,10 +2,10 @@
 
   var pluginName = "iframeEmulator",
   defaults = {
-    containerSelector: '.ifem-iframe',
-    classPrefix: 'ifem',
+    containerSelector: '.ifr-iframe',
+    classPrefix: 'ifr',
     stylesheetClass: false,
-    bodyClass: 'ifem-active'
+    bodyClass: 'ifr-active'
   },
   globals = {
     breakpoints: {},
@@ -13,7 +13,7 @@
     mediaQueryRules: false,
     iframes: [],
     stylesheets: [],
-    styleClass: 'ifem-styles',
+    styleClass: 'ifr-styles',
     styleElement: [],
     eventNameSpace: "plugin_" + pluginName,
     plugin: false,

@@ -21,15 +21,15 @@ body {
 a.toggle {
   float: left;
 }
-a.ifem-grid:not(.ifem-grid-active),
-a[data-ifem-pre-active=false],
+a.ifr-grid:not(.ifr-grid-active),
+a[data-ifr-pre-active=false],
 a.iframe-toggle.iframe-toggle-disabled {
   color: grey;
   background: rgba(128, 128, 128, 0.16);
   border: 1px solid rgba(128, 128, 128, 0.12);
 }
-a.ifem-grid:not(.ifem-grid-active):hover,
-a[data-ifem-pre-active=false]:hover,
+a.ifr-grid:not(.ifr-grid-active):hover,
+a[data-ifr-pre-active=false]:hover,
 a.iframe-toggle.iframe-toggle-disabled:hover {
   color: grey;
   background: rgba(128, 128, 128, 0.25);
@@ -42,24 +42,24 @@ a:focus,
 a:active {
   box-shadow: none !important;
 }
-body:not(.ifem-active) a[data-ifem-view] {
+body:not(.ifr-active) a[data-ifr-view] {
   color: grey;
   background: rgba(128, 128, 128, 0.16);
   border: 1px solid rgba(128, 128, 128, 0.12);
 }
-body:not(.ifem-active) a[data-ifem-view]:hover {
+body:not(.ifr-active) a[data-ifr-view]:hover {
   color: grey;
   background: rgba(128, 128, 128, 0.25);
   border: 1px solid rgba(128, 128, 128, 0.3);
 }
-body:not(.ifem-active) a[data-ifem-view] + .predefines {
+body:not(.ifr-active) a[data-ifr-view] + .predefines {
   display: none;
 }
-body.ifem-grid-view .patterns {
+body.ifr-grid-view .patterns {
   display: flex;
   flex-wrap: wrap;
 }
-body.ifem-grid-view .patterns .pattern {
+body.ifr-grid-view .patterns .pattern {
   flex-shrink: 0;
   margin: 10px;
 }
@@ -68,7 +68,7 @@ body.ifem-grid-view .patterns .pattern {
   border: 1px solid #e6e6e6;
   padding: 10px;
 }
-body.ifem-active .iframe {
+body.ifr-active .iframe {
   resize: both;
   overflow: auto;
   height: 350px;
