@@ -1,5 +1,5 @@
 (function(c, e, r, a) {
-    var o = "iframeEmulator", i = {
+    var o = "iframeify", i = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,

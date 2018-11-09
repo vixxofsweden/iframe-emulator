@@ -1,6 +1,6 @@
 ;(function ( $, window, document, undefined ) {
 
-  var pluginName = "iframeEmulator",
+  var pluginName = "iframeify",
   defaults = {
     containerSelector: '.ifr-iframe',
     classPrefix: 'ifr',
