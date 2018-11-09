@@ -17,7 +17,7 @@ var options = {
   bodyClass: 'ifem-active'
 }
 
-$(document).iframeEmulator(options);
+$(document).iframeify(options);
 ```
 
 ### Options
@@ -43,7 +43,7 @@ $('.ifem-size-selector').click(function(e) {
   e.preventDefault();
   var iframeWidth = $(this).attr('data-ifem-pre-width');
   var iframeHeight = $(this).attr('data-ifem-pre-height');
-  $(document).iframeEmulator('setIframeSize', {
+  $(document).iframeify('setIframeSize', {
     width: iframeWidth,
     height: iframeHeight
   });
@@ -54,6 +54,6 @@ $('.ifem-size-selector').click(function(e) {
 ```
 $('.ifem-size-reset').click(function(e) {
   e.preventDefault();
-  $(document).iframeEmulator('resetIframesSize');
+  $(document).iframeify('resetIframesSize');
 });
 ```
