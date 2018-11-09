@@ -72,7 +72,7 @@
             i.matchIframeWithMediaQuery(t);
         },
         setMediaQueries: function(e) {
-            if (y.styleElement.length < 1) {
+            if (y.styleElement && y.styleElement.length < 1) {
                 var t = c("<style></style>").addClass(y.styleClass);
                 c(r).find("head").append(t);
                 y.styleElement = t;
@@ -82,14 +82,14 @@
             } else if (!y.hasSetBreakpoints && !y.mediaQueryRules) {
                 var i = y.stylesheets;
                 var p = "";
-                c.each(i, function(u, d) {
-                    var e = d.cssRules.length;
+                c.each(i, function(d, u) {
+                    var e = u.cssRules.length;
                     var h = 0;
                     var m = 0;
-                    c.each(d.cssRules, function(e, t) {
+                    c.each(u.cssRules, function(e, t) {
                         m++;
-                        if (t.media) {
-                            var i = y.classPrefix + "-ss" + u + "r" + e;
+                        if (t.media && t.media[0] && (t.media[0].indexOf("max-width") > -1 || t.media[0].indexOf("min-width") > -1)) {
+                            var i = y.classPrefix + "-ss" + d + "r" + e;
                             var s = "";
                             var a = "." + i;
                             c.each(t.cssRules, function(e, t) {
@@ -102,7 +102,7 @@
                             var l = t;
                             var r = e;
                             var o = r - h;
-                            var f = d;
+                            var f = u;
                             y.breakpoints[i] = {
                                 maxWidth: false,
                                 minWidth: false,

@@ -87,7 +87,7 @@
     },
 
     setMediaQueries: function(thisPlugin) {
-      if (globals.styleElement.length < 1) {
+      if (globals.styleElement && globals.styleElement.length < 1) {
         var styleElement = $('<style></style>').addClass(globals.styleClass);
         $(document).find('head').append(styleElement);
         globals.styleElement = styleElement;
@@ -104,7 +104,7 @@
           var testIndex = 0;
           $.each(styleObject.cssRules, function(r, rule) {
             testIndex++;
-            if (rule.media) {
+            if (rule.media && rule.media[0] && (rule.media[0].indexOf('max-width') > -1 || rule.media[0].indexOf('min-width') > -1)) {
               var newClass = globals.classPrefix + '-ss' + i + "r" + r;
               var newCss = "";
               var newSelector = "." + newClass;
