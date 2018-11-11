@@ -3,7 +3,8 @@
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,
-        bodyClass: "ifr-active"
+        bodyClass: "ifr-active",
+        onWindowResize: false
     }, y = {
         breakpoints: {},
         hasSetBreakpoints: false,
@@ -14,7 +15,8 @@
         styleElement: [],
         eventNameSpace: "plugin_" + o,
         plugin: false,
-        pluginElement: false
+        pluginElement: false,
+        onWindowResize: false
     };
     function n(e, t) {
         this.element = e;
@@ -39,6 +41,7 @@
             var i = c(s.options.containerSelector);
             y.iframes = i;
             y.classPrefix = s.options.classPrefix;
+            y.onWindowResize = s.options.onWindowResize;
             y.styleClass = s.options.classPrefix + "-styles";
             y.plugin = s;
             y.pluginElement = this.$element;
@@ -173,6 +176,9 @@
                     }
                 }
             });
+            if (y.onWindowResize) {
+                c(e).trigger("resize");
+            }
         },
         unsetAll: function() {
             c("body").removeClass(y.plugin.options.bodyClass);
