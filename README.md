@@ -9,12 +9,15 @@ Use a div to display responsive patterns like you would inside an iframe
 
 ## Initialise
 
+**Default options:**
+
 ```
 var options = {
-  containerSelector: '.iframe',
-  stylesheetClass: 'ifem-iframe-stylesheet',
-  classPrefix: 'ifem',
-  bodyClass: 'ifem-active'
+  containerSelector: '.ifr-iframe',
+  classPrefix: 'ifr',
+  stylesheetClass: false,
+  bodyClass: 'ifr-active',
+  onWindowResize: false
 }
 
 $(document).iframeify(options);
@@ -26,10 +29,11 @@ $(document).iframeify(options);
 - `stylesheetClass`: if you only want specific stylesheets to be targeted
 - `classPrefix`: class prefix for dynamically generated elements
 - `bodyClass`: class that is applied to the body when the iframe mode is enabled
+- `onWindowResize`: this will trigger a window resize event (this can be used if you control some aspects of the responsiveness by JavaScript, unless you trigger it by checking the window width)
 
 ## Example use
 
-Example here:
+Example can be found here:
 
 [https://s.codepen.io/vixxofsweden/debug/ZqVZzo]https://s.codepen.io/vixxofsweden/debug/ZqVZzo
 

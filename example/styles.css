@@ -72,8 +72,31 @@ body.ifr-active .iframe {
   resize: both;
   overflow: auto;
   height: 350px;
+  min-height: 100px;
   clear: both;
   max-width: 100%;
   overflow: scroll;
   margin-bottom: 40px;
+}
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.tabs .tab {
+  border: 1px solid grey;
+  padding: 10px 15px;
+  margin: 0;
+  white-space: nowrap;
+}
+.tabs .tab:not(:first-child) {
+  border-left: 0;
+}
+.tabs.wrap {
+  flex-wrap: wrap;
+}
+.tabs.wrap .tab {
+  border-radius: 20px;
+  border: 1px solid grey;
+  margin: 3px;
 }

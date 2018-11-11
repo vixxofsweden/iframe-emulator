@@ -4,10 +4,10 @@ $(document).ready(function(){
     containerSelector: '.iframe',
     stylesheetClass: 'ifr-iframe-stylesheet',
     classPrefix: 'ifr',
-    bodyClass: 'ifr-active'
+    bodyClass: 'ifr-active',
+    onWindowResize: true
   }
 
-  $(document).iframeify(options);
 
   $('.iframe-toggle').click(function(){
     if ($('body').hasClass('ifr-active')) {
@@ -42,4 +42,27 @@ $(document).ready(function(){
     $btn.toggleClass('ifr-grid-active');
     $('body').toggleClass('ifr-grid-view');
   });
+
+
+
+  // Resize event to show example
+  var initialWidth = 0;
+  $(window).resize(function() {
+    var $tabsGroups = $('.tabs');
+    $.each($tabsGroups, function(i, tabs) {
+      var $tabs = $(tabs);
+      var tabsWidth = $tabs.prop('scrollWidth');
+      var tabsParentWidth = $tabs.parent().innerWidth();
+      if (tabsWidth > tabsParentWidth && !$tabs.hasClass('wrap')) {
+        $tabs.addClass('wrap');
+        initialWidth = tabsWidth;
+      }
+      else if (initialWidth < tabsParentWidth) {
+        $tabs.removeClass('wrap');
+      }
+    });
+  });
+
+  // This needs to be initialise after any window resize event you want to trigger
+  $(document).iframeify(options);
 });

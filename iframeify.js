@@ -5,7 +5,8 @@
     containerSelector: '.ifr-iframe',
     classPrefix: 'ifr',
     stylesheetClass: false,
-    bodyClass: 'ifr-active'
+    bodyClass: 'ifr-active',
+    onWindowResize: false
   },
   globals = {
     breakpoints: {},
@@ -17,7 +18,8 @@
     styleElement: [],
     eventNameSpace: "plugin_" + pluginName,
     plugin: false,
-    pluginElement: false
+    pluginElement: false,
+    onWindowResize: false
   };
 
   function Plugin( element, options ) {
@@ -48,6 +50,7 @@
 
       globals.iframes = $iframes;
       globals.classPrefix = thisPlugin.options.classPrefix;
+      globals.onWindowResize = thisPlugin.options.onWindowResize;
       globals.styleClass = thisPlugin.options.classPrefix + "-styles";
       globals.plugin = thisPlugin;
       globals.pluginElement = this.$element;
@@ -200,6 +203,10 @@
           }
         }
       });
+      if (globals.onWindowResize) {
+        console.log('trigger resize');
+        $(window).trigger('resize');
+      }
     },
 
     unsetAll: function() {
