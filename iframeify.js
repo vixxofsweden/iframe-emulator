@@ -204,7 +204,6 @@
         }
       });
       if (globals.onWindowResize) {
-        console.log('trigger resize');
         $(window).trigger('resize');
       }
     },
