@@ -1,11 +1,11 @@
-(function(c, e, r, a) {
+(function(p, e, r, a) {
     var o = "iframeify", i = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,
         bodyClass: "ifr-active",
         onWindowResize: false
-    }, y = {
+    }, v = {
         breakpoints: {},
         hasSetBreakpoints: false,
         mediaQueryRules: false,
@@ -20,122 +20,129 @@
     };
     function n(e, t) {
         this.element = e;
-        this.$element = c(e);
-        this.options = c.extend({}, i, t);
+        this.$element = p(e);
+        this.options = p.extend({}, i, t);
         this._defaults = i;
         this._name = o;
         this.init();
     }
-    c.extend(n.prototype = {
+    p.extend(n.prototype = {
         init: function() {
             var s;
             if (this && this.options) {
                 s = this;
-            } else if (y.plugin && y.plugin.options) {
-                s = y.plugin;
+            } else if (v.plugin && v.plugin.options) {
+                s = v.plugin;
             } else {
                 throw new Error("No plugin object found");
             }
             var e = s.options.classPrefix;
             var t = "plugin_" + o;
-            var i = c(s.options.containerSelector);
-            y.iframes = i;
-            y.classPrefix = s.options.classPrefix;
-            y.onWindowResize = s.options.onWindowResize;
-            y.styleClass = s.options.classPrefix + "-styles";
-            y.plugin = s;
-            y.pluginElement = this.$element;
+            var i = p(s.options.containerSelector);
+            v.iframes = i;
+            v.classPrefix = s.options.classPrefix;
+            v.onWindowResize = s.options.onWindowResize;
+            v.styleClass = s.options.classPrefix + "-styles";
+            v.plugin = s;
+            v.pluginElement = this.$element;
             var a = r.styleSheets;
             var n = a;
             if (s.options.stylesheetClass) {
                 var l = s.options.stylesheetClass;
-                n = c.map(a, function(e, t) {
-                    var i = c(e.ownerNode);
+                n = p.map(a, function(e, t) {
+                    var i = p(e.ownerNode);
                     if (i.hasClass(l)) {
                         return e;
                     }
                 });
             }
-            y.stylesheets = n;
+            v.stylesheets = n;
             s.setMediaQueries(s);
-            c.each(y.iframes, function(e, t) {
-                var i = c(t);
+            p.each(v.iframes, function(e, t) {
+                var i = p(t);
                 s.initIframe(i, s);
             });
         },
         initIframe: function(t, i) {
-            t.on("mousedown." + y.eventNameSpace, function(e) {
-                c(r).on("mousemove." + y.eventNameSpace, function() {
+            t.on("mousedown." + v.eventNameSpace, function(e) {
+                p(r).on("mousemove." + v.eventNameSpace, function() {
                     i.matchIframeWithMediaQuery(t);
                 });
-                c(r).on("mouseup." + y.eventNameSpace, function() {
-                    c(r).off("mousemove." + y.eventNameSpace);
+                p(r).on("mouseup." + v.eventNameSpace, function() {
+                    p(r).off("mousemove." + v.eventNameSpace);
                 });
             });
             i.matchIframeWithMediaQuery(t);
         },
         setMediaQueries: function(e) {
-            if (y.styleElement && y.styleElement.length < 1) {
-                var t = c("<style></style>").addClass(y.styleClass);
-                c(r).find("head").append(t);
-                y.styleElement = t;
+            if (v.styleElement && v.styleElement.length < 1) {
+                var t = p("<style></style>").addClass(v.styleClass);
+                p(r).find("head").append(t);
+                v.styleElement = t;
             }
-            if (y.hasSetBreakpoints && y.mediaQueryRules) {
-                y.styleElement.append(y.mediaQueryRules);
-            } else if (!y.hasSetBreakpoints && !y.mediaQueryRules) {
-                var i = y.stylesheets;
-                var p = "";
-                c.each(i, function(d, u) {
+            if (v.hasSetBreakpoints && v.mediaQueryRules) {
+                v.styleElement.append(v.mediaQueryRules);
+            } else if (!v.hasSetBreakpoints && !v.mediaQueryRules) {
+                var i = v.stylesheets;
+                var c = "";
+                p.each(i, function(d, u) {
                     var e = u.cssRules.length;
                     var h = 0;
                     var m = 0;
-                    c.each(u.cssRules, function(e, t) {
+                    p.each(u.cssRules, function(e, t) {
                         m++;
                         if (t.media && t.media[0] && (t.media[0].indexOf("max-width") > -1 || t.media[0].indexOf("min-width") > -1)) {
-                            var i = y.classPrefix + "-ss" + d + "r" + e;
-                            var s = "";
-                            var a = "." + i;
-                            c.each(t.cssRules, function(e, t) {
-                                s = s + "" + a + " " + t.cssText;
+                            var i = v.classPrefix + "-ss" + d + "r" + e;
+                            var n = "";
+                            var l = "." + i;
+                            p.each(t.cssRules, function(e, t) {
+                                if (t.selectorText) {
+                                    var i = t.selectorText;
+                                    var s = i.split(",");
+                                    var a = t.cssText.match(/\{.*\}/);
+                                    p.each(s, function(e, t) {
+                                        n = n + "" + l + " " + t + a + "\n";
+                                    });
+                                }
                             });
-                            p = p + s;
-                            y.styleElement.append(s);
-                            var n = t.media[0].match(/[0-9]+/g);
-                            n = c.map(n, Number);
-                            var l = t;
+                            c = c + n;
+                            v.styleElement.append(n);
+                            var s = t.media[0].match(/[0-9]+/g);
+                            s = p.map(s, Number);
+                            var a = t;
                             var r = e;
                             var o = r - h;
                             var f = u;
-                            y.breakpoints[i] = {
+                            v.breakpoints[i] = {
                                 maxWidth: false,
                                 minWidth: false,
-                                deletedRule: l,
+                                deletedRule: a,
                                 deletedRulePosition: o,
                                 addRulePosition: r,
                                 deletedFromStylesheet: f,
-                                px: n
+                                px: s
                             };
                             if (t.media[0].indexOf("max-width") > -1 && t.media[0].indexOf("min-width") > -1) {
-                                y.breakpoints[i].maxWidth = true;
-                                y.breakpoints[i].minWidth = true;
+                                v.breakpoints[i].maxWidth = true;
+                                v.breakpoints[i].minWidth = true;
                                 h++;
                             } else if (t.media[0].indexOf("max-width") > -1) {
-                                y.breakpoints[i].maxWidth = true;
+                                v.breakpoints[i].maxWidth = true;
                             } else if (t.media[0].indexOf("min-width") > -1) {
-                                y.breakpoints[i].minWidth = true;
+                                v.breakpoints[i].minWidth = true;
                                 h++;
                             }
                         }
                     });
                 });
-                y.mediaQueryRules = p;
-                y.hasSetBreakpoints = true;
+                v.mediaQueryRules = c;
+                v.hasSetBreakpoints = true;
             }
-            c("body").addClass(y.plugin.options.bodyClass);
+            p("body").addClass(v.plugin.options.bodyClass);
         },
         matchIframeWithMediaQuery: function(o) {
             var f = o.width();
-            c.each(y.breakpoints, function(e, t) {
+            p.each(v.breakpoints, function(e, t) {
                 var i = t.hasBeenDeleted;
                 var s = e;
                 var a = t.px;
@@ -176,24 +183,24 @@
                     }
                 }
             });
-            if (y.onWindowResize) {
-                c(e).trigger("resize");
+            if (v.onWindowResize) {
+                p(e).trigger("resize");
             }
         },
         unsetAll: function() {
-            c("body").removeClass(y.plugin.options.bodyClass);
-            c.each(y.breakpoints, function(e, t) {
+            p("body").removeClass(v.plugin.options.bodyClass);
+            p.each(v.breakpoints, function(e, t) {
                 var i = e;
                 var s = t.px;
                 var a = t.type;
                 if (t["hasBeenDeleted"]) {
                     t.deletedFromStylesheet.insertRule(t.deletedRule.cssText, t.addRulePosition);
                     t["hasBeenDeleted"] = false;
-                    y.iframes.removeClass(e);
-                    y.plugin.resetStyle(y.iframes);
+                    v.iframes.removeClass(e);
+                    v.plugin.resetStyle(v.iframes);
                 }
             });
-            y.styleElement.text("");
+            v.styleElement.text("");
         },
         setIframeSize: function(e) {
             var s = false;
@@ -207,46 +214,46 @@
                 }
             }
             if (s || a) {
-                c.each(y.iframes, function(e, t) {
-                    var i = c(t);
+                p.each(v.iframes, function(e, t) {
+                    var i = p(t);
                     if (s) {
                         i.width(s);
                     }
                     if (a) {
                         i.height(a);
                     }
-                    y.plugin.matchIframeWithMediaQuery(i);
+                    v.plugin.matchIframeWithMediaQuery(i);
                 });
             }
         },
         resetIframesSize: function() {
-            c.each(y.iframes, function(e, t) {
-                var i = c(t);
-                y.plugin.resetStyle(i);
-                y.plugin.matchIframeWithMediaQuery(i);
+            p.each(v.iframes, function(e, t) {
+                var i = p(t);
+                v.plugin.resetStyle(i);
+                v.plugin.matchIframeWithMediaQuery(i);
             });
         },
         resetStyle: function(e) {
-            c.each(e, function(e, t) {
-                var i = c(t);
+            p.each(e, function(e, t) {
+                var i = p(t);
                 i.attr("style", "");
             });
         },
         resetAttribute: function(e, i) {
-            c.each(e, function(e, t) {
-                $el = c(t);
+            p.each(e, function(e, t) {
+                $el = p(t);
                 $el.attr(i, "false");
             });
         }
     });
-    c.fn[o] = function(e) {
+    p.fn[o] = function(e) {
         if (typeof arguments[0] === "string") {
             var t = arguments[0];
             var i = Array.prototype.slice.call(arguments, 1);
             var s;
             this.each(function() {
-                if (c.data(this, "plugin_" + o) && typeof c.data(this, "plugin_" + o)[t] === "function") {
-                    s = c.data(this, "plugin_" + o)[t].apply(this, i);
+                if (p.data(this, "plugin_" + o) && typeof p.data(this, "plugin_" + o)[t] === "function") {
+                    s = p.data(this, "plugin_" + o)[t].apply(this, i);
                 } else {
                     throw new Error("Method " + t + " does not exist on jQuery." + o);
                 }
@@ -258,8 +265,8 @@
             }
         } else if (typeof e === "object" || !e) {
             return this.each(function() {
-                if (!c.data(this, "plugin_" + o)) {
-                    c.data(this, "plugin_" + o, new n(this, e));
+                if (!p.data(this, "plugin_" + o)) {
+                    p.data(this, "plugin_" + o, new n(this, e));
                 }
             });
         }

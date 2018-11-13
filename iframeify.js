@@ -112,7 +112,14 @@
               var newCss = "";
               var newSelector = "." + newClass;
               $.each(rule.cssRules, function(d, cssRule) {
-                newCss = newCss + "" + newSelector + " " + cssRule.cssText;
+                if (cssRule.selectorText) {
+                  var selectors = cssRule.selectorText;
+                  var selectorArray = selectors.split(',');
+                  var cssText = cssRule.cssText.match(/\{.*\}/);
+                  $.each(selectorArray, function(i, selector) {
+                    newCss = newCss + " " + newSelector + " " + selector + cssText;
+                  });
+                }
               });
               allCss = allCss + newCss;
               globals.styleElement.append(newCss);
