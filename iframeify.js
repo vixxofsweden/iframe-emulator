@@ -231,9 +231,10 @@
       globals.styleElement.text('');
     },
 
-    setIframeSize: function(args) {
+    setIframeSize: function(args, target) {
       var predefinedWidth = false;
       var predefinedHeight = false;
+      var iframes = globals.iframes;
       if (args) {
         if (args.width) {
           predefinedWidth = args.width;
@@ -242,8 +243,11 @@
           predefinedHeight = args.height;
         }
       }
+      if (target && target.length > 0 && $(target).is($(globals.plugin.options.containerSelector))) {
+        iframes = target;
+      }
       if (predefinedWidth || predefinedHeight) {
-        $.each(globals.iframes, function(i, iframe) {
+        $.each(iframes, function(i, iframe) {
           var $iframe = $(iframe);
           if (predefinedWidth) {
             $iframe.width(predefinedWidth);
@@ -256,8 +260,12 @@
       }
     },
 
-    resetIframesSize: function() {
-      $.each(globals.iframes, function(i, iframe) {
+    resetIframesSize: function(target) {
+      var iframes = globals.iframes;
+      if (target && $(target).is($(globals.plugin.options.containerSelector))) {
+        iframes = target;
+      }
+      $.each(iframes, function(i, iframe) {
         var $iframe = $(iframe);
         globals.plugin.resetStyle($iframe);
         globals.plugin.matchIframeWithMediaQuery($iframe);
@@ -283,10 +291,11 @@
       if (typeof arguments[0] === 'string') {
         var methodName = arguments[0];
         var args = Array.prototype.slice.call(arguments, 1);
+        var target = Array.prototype.slice.call(arguments, 2);
         var returnVal;
         this.each(function() {
           if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
-            returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
+            returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args, target);
           } else {
             throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
           }

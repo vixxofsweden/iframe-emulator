@@ -29,9 +29,24 @@ $(document).ready(function(){
     });
   });
 
+  $('.ifr-size-selector-spec').click(function(e) {
+    e.preventDefault();
+    var iframeWidth = $(this).attr('data-ifr-pre-width');
+    var iframeHeight = $(this).attr('data-ifr-pre-height');
+    $(document).iframeify('setIframeSize', {
+      width: iframeWidth,
+      height: iframeHeight
+    }, $('#iframe2'));
+  });
+
   $('.ifr-size-reset').click(function(e) {
     e.preventDefault();
     $(document).iframeify('resetIframesSize');
+  })
+
+  $('.ifr-size-reset-spec').click(function(e) {
+    e.preventDefault();
+    $(document).iframeify('resetIframesSize', $('#iframe2'));
   })
 
 

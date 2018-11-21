@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" class="ifr-iframe-stylesheet" href="bootstrap.css">
   <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="../iframeify.js"></script>
+  <script type="text/javascript" src="../dist/iframeify.min.js"></script>
   <script type="text/javascript" src="init.js"></script>
 </head>
 <body>
@@ -20,6 +20,7 @@
   </a>
 
   <div class="predefines">
+    <span>Global controls:</span>
     <a href="#" class="btn btn-outline-success ifr-size-selector predefined" data-ifr-pre-active="false" data-ifr-pre-width="357" data-ifr-pre-height="667">
       Smartphone
     </a>
@@ -35,7 +36,7 @@
 <div class="patterns">
   <div class="pattern">
     <h1>Example pattern 1</h1>
-    <div class="iframe enabled">
+    <div class="iframe enabled" id="iframe1">
       <div class="container">
           <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
@@ -249,7 +250,19 @@
   </div>
   <div class="pattern">
     <h1>Example pattern 2</h1>
-    <div class="iframe enabled">
+    <div class="predefines">
+      <span>Individual controls:</span>
+      <a href="#" class="btn btn-outline-success ifr-size-selector-spec predefined" data-ifr-pre-active="false" data-ifr-pre-width="357" data-ifr-pre-height="667">
+        Smartphone
+      </a>
+      <a href="#" class="btn btn-outline-success ifr-size-selector-spec predefined" data-ifr-pre-active="false" data-ifr-pre-width="768" data-ifr-pre-height="1024">
+        Tablet
+      </a>
+      <a href="#" class="btn btn-outline-danger ifr-size-reset-spec predefined" data-ifr-reset>
+        Reset
+      </a>
+    </div>
+    <div class="iframe enabled" id="iframe2">
       <div class="container">
 
             <div class="row">

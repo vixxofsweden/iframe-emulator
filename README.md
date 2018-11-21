@@ -1,5 +1,5 @@
 # iframeify
-Use a div to display responsive patterns like you would inside an iframe
+Turns a div into a faux iframe that can be used to display responsive patterns. **Still experimental and has only been tested in a recent version of Chrome**
 
 ## Currently works with the following types of media queries:
 
@@ -23,12 +23,12 @@ var options = {
 $(document).iframeify(options);
 ```
 
-### Options
+## Options
 
-- `containerSelector`: the classes on your iframe emulators (divs)
+- `containerSelector`: the classes on your faux iframes
 - `stylesheetClass`: if you only want specific stylesheets to be targeted
 - `classPrefix`: class prefix for dynamically generated elements
-- `bodyClass`: class that is applied to the body when the iframe mode is enabled
+- `bodyClass`: class that is applied to the body when the faux iframe mode is enabled
 - `onWindowResize`: this will trigger a window resize event (this can be used if you control some aspects of the responsiveness by JavaScript, unless you trigger it by checking the window width)
 
 ## Example use
@@ -37,27 +37,58 @@ Example can be found here:
 
 [https://s.codepen.io/vixxofsweden/debug/ZqVZzo]https://s.codepen.io/vixxofsweden/debug/ZqVZzo
 
+## Recommended styling
 
-### Using methods to create options
+Use with `resize: both;` for a great option to resize the faux iframe by dragging it. Note: Limited browser support.
 
-#### Setting predefined sizes
 
+## Using methods to create controls
+
+### Setting predefined sizes
+
+
+**Global controls**
 ```
-$('.ifem-size-selector').click(function(e) {
+$('.ifr-size-selector').click(function(e) {
   e.preventDefault();
-  var iframeWidth = $(this).attr('data-ifem-pre-width');
-  var iframeHeight = $(this).attr('data-ifem-pre-height');
+  var iframeWidth = $(this).attr('data-ifr-pre-width');
+  var iframeHeight = $(this).attr('data-ifr-pre-height');
   $(document).iframeify('setIframeSize', {
     width: iframeWidth,
     height: iframeHeight
-  });
+  };
 });
 ```
 
-#### Reseting sizes
+**Individual controls**
+
 ```
-$('.ifem-size-reset').click(function(e) {
+$('.ifr-size-selector').click(function(e) {
   e.preventDefault();
-  $(document).iframeify('resetIframesSize');
+  var iframeWidth = $(this).attr('data-ifr-pre-width');
+  var iframeHeight = $(this).attr('data-ifr-pre-height');
+  $(document).iframeify('setIframeSize', {
+    width: iframeWidth,
+    height: iframeHeight
+  }, $('#iframe1')); // Target a specific faux iframe
+});
+```
+
+### Reseting sizes
+
+**Global controls**
+
+```
+$('.ifr-size-reset').click(function(e) {
+  e.preventDefault();
+  $(document).iframeify('resetIframesSize'); // Targets all faux iframes
+});
+```
+
+**Individual controls**
+```
+$('.ifr-size-reset-spec').click(function(e) {
+  e.preventDefault();
+  $(document).iframeify('resetIframesSize', $('#iframe2')); // Target a specific faux iframe
 });
 ```

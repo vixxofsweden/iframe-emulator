@@ -1,4 +1,4 @@
-(function(p, e, r, a) {
+(function(p, e, r, n) {
     var o = "iframeify", i = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
@@ -18,7 +18,7 @@
         pluginElement: false,
         onWindowResize: false
     };
-    function n(e, t) {
+    function l(e, t) {
         this.element = e;
         this.$element = p(e);
         this.options = p.extend({}, i, t);
@@ -26,7 +26,7 @@
         this._name = o;
         this.init();
     }
-    p.extend(n.prototype = {
+    p.extend(l.prototype = {
         init: function() {
             var s;
             if (this && this.options) {
@@ -101,7 +101,7 @@
                                     var s = i.split(",");
                                     var a = t.cssText.match(/\{.*\}/);
                                     p.each(s, function(e, t) {
-                                        n = n + "" + l + " " + t + a + "\n";
+                                        n = n + " " + l + " " + t + a;
                                     });
                                 }
                             });
@@ -202,9 +202,10 @@
             });
             v.styleElement.text("");
         },
-        setIframeSize: function(e) {
+        setIframeSize: function(e, t) {
             var s = false;
             var a = false;
+            var i = v.iframes;
             if (e) {
                 if (e.width) {
                     s = e.width;
@@ -213,8 +214,11 @@
                     a = e.height;
                 }
             }
+            if (t && t.length > 0 && p(t).is(p(v.plugin.options.containerSelector))) {
+                i = t;
+            }
             if (s || a) {
-                p.each(v.iframes, function(e, t) {
+                p.each(i, function(e, t) {
                     var i = p(t);
                     if (s) {
                         i.width(s);
@@ -226,8 +230,12 @@
                 });
             }
         },
-        resetIframesSize: function() {
-            p.each(v.iframes, function(e, t) {
+        resetIframesSize: function(e) {
+            var t = v.iframes;
+            if (e && p(e).is(p(v.plugin.options.containerSelector))) {
+                t = e;
+            }
+            p.each(t, function(e, t) {
                 var i = p(t);
                 v.plugin.resetStyle(i);
                 v.plugin.matchIframeWithMediaQuery(i);
@@ -250,23 +258,24 @@
         if (typeof arguments[0] === "string") {
             var t = arguments[0];
             var i = Array.prototype.slice.call(arguments, 1);
-            var s;
+            var s = Array.prototype.slice.call(arguments, 2);
+            var a;
             this.each(function() {
                 if (p.data(this, "plugin_" + o) && typeof p.data(this, "plugin_" + o)[t] === "function") {
-                    s = p.data(this, "plugin_" + o)[t].apply(this, i);
+                    a = p.data(this, "plugin_" + o)[t].apply(this, i, s);
                 } else {
                     throw new Error("Method " + t + " does not exist on jQuery." + o);
                 }
             });
-            if (s !== a) {
-                return s;
+            if (a !== n) {
+                return a;
             } else {
                 return this;
             }
         } else if (typeof e === "object" || !e) {
             return this.each(function() {
                 if (!p.data(this, "plugin_" + o)) {
-                    p.data(this, "plugin_" + o, new n(this, e));
+                    p.data(this, "plugin_" + o, new l(this, e));
                 }
             });
         }
