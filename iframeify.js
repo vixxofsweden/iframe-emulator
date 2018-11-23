@@ -79,14 +79,14 @@
     initIframe: function($iframe, thisPlugin) {
       $iframe.on('mousedown.' + globals.eventNameSpace, function(e){
         $(document).on('mousemove.' + globals.eventNameSpace, function() {
-          thisPlugin.matchIframeWithMediaQuery($iframe);
+          thisPlugin.matchMediaQueries($iframe);
         });
 
         $(document).on('mouseup.' + globals.eventNameSpace, function() {
           $(document).off('mousemove.' + globals.eventNameSpace);
         });
       });
-      thisPlugin.matchIframeWithMediaQuery($iframe);
+      thisPlugin.matchMediaQueries($iframe);
     },
 
     setMediaQueries: function(thisPlugin) {
@@ -161,7 +161,7 @@
     }
     $('body').addClass(globals.plugin.options.bodyClass);
     },
-    matchIframeWithMediaQuery: function($iframe) {
+    matchMediaQueries: function($iframe) {
       var iframeWidth = $iframe.width();
       $.each(globals.breakpoints, function(key, classObj) {
         var hasBeenDeleted = classObj.hasBeenDeleted;
@@ -213,6 +213,7 @@
       if (globals.onWindowResize) {
         $(window).trigger('resize');
       }
+      $(document).trigger(pluginName + '.matchMediaQueries', $iframe);
     },
 
     unsetAll: function() {
@@ -255,7 +256,7 @@
           if (predefinedHeight) {
             $iframe.height(predefinedHeight);
           }
-          globals.plugin.matchIframeWithMediaQuery($iframe);
+          globals.plugin.matchMediaQueries($iframe);
         });
       }
     },
@@ -268,7 +269,7 @@
       $.each(iframes, function(i, iframe) {
         var $iframe = $(iframe);
         globals.plugin.resetStyle($iframe);
-        globals.plugin.matchIframeWithMediaQuery($iframe);
+        globals.plugin.matchMediaQueries($iframe);
       });
     },
 
