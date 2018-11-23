@@ -31,12 +31,6 @@ $(document).iframeify(options);
 - `bodyClass`: class that is applied to the body when the faux iframe mode is enabled
 - `onWindowResize`: this will trigger a window resize event (this can be used if you control some aspects of the responsiveness by JavaScript, unless you trigger it by checking the window width)
 
-## Example use
-
-Example can be found here:
-
-[https://s.codepen.io/vixxofsweden/debug/ZqVZzo]https://s.codepen.io/vixxofsweden/debug/ZqVZzo
-
 ## Recommended styling
 
 Use with `resize: both;` for a great option to resize the faux iframe by dragging it. Note: Limited browser support.
@@ -92,3 +86,26 @@ $('.ifr-size-reset-spec').click(function(e) {
   $(document).iframeify('resetIframesSize', $('#iframe2')); // Target a specific faux iframe
 });
 ```
+
+## Events
+
+### Matching media query
+
+The function that matches the faux iframe size to media queries triggers an event, which can be listened to. This could, for example, be used to display the current width and height of the faux iframe.
+
+```
+$(document).on('iframeify.matchMediaQueries', function(e, el) {
+  var $el = $(el); // This is the faux iframe
+  var iframeWidth = $el.width();
+  var iframeHeight = $el.height();
+  var $sizeElement = $el.find('.iframe-size');
+  $sizeElement.find('.width').text(iframeWidth);
+  $sizeElement.find('.height').text(iframeHeight);
+});
+```
+
+## Example use
+
+Example can be found here:
+
+[https://vixxofsweden.com/code/iframeify/](https://vixxofsweden.com/code/iframeify/)
