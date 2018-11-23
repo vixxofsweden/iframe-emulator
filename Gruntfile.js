@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       }
     },
     less: {
-      'example/styles.css': ['example/*.less']
+      'example/public/styles.css': ['example/*.less']
     },
     uglify: {
       nonMin: {
@@ -41,7 +41,8 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'dist/iframeify.min.js': ['iframeify.js']
+          'dist/iframeify.min.js': ['iframeify.js'],
+          'example/public/iframeify.min.js': ['iframeify.js']
         }
       }
     }

@@ -1,5 +1,5 @@
 (function(p, e, r, n) {
-    var o = "iframeify", i = {
+    var d = "iframeify", t = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,
@@ -13,17 +13,17 @@
         stylesheets: [],
         styleClass: "ifr-styles",
         styleElement: [],
-        eventNameSpace: "plugin_" + o,
+        eventNameSpace: "plugin_" + d,
         plugin: false,
         pluginElement: false,
         onWindowResize: false
     };
-    function l(e, t) {
+    function l(e, i) {
         this.element = e;
         this.$element = p(e);
-        this.options = p.extend({}, i, t);
-        this._defaults = i;
-        this._name = o;
+        this.options = p.extend({}, t, i);
+        this._defaults = t;
+        this._name = d;
         this.init();
     }
     p.extend(l.prototype = {
@@ -37,9 +37,9 @@
                 throw new Error("No plugin object found");
             }
             var e = s.options.classPrefix;
-            var t = "plugin_" + o;
-            var i = p(s.options.containerSelector);
-            v.iframes = i;
+            var i = "plugin_" + d;
+            var t = p(s.options.containerSelector);
+            v.iframes = t;
             v.classPrefix = s.options.classPrefix;
             v.onWindowResize = s.options.onWindowResize;
             v.styleClass = s.options.classPrefix + "-styles";
@@ -49,71 +49,71 @@
             var n = a;
             if (s.options.stylesheetClass) {
                 var l = s.options.stylesheetClass;
-                n = p.map(a, function(e, t) {
-                    var i = p(e.ownerNode);
-                    if (i.hasClass(l)) {
+                n = p.map(a, function(e, i) {
+                    var t = p(e.ownerNode);
+                    if (t.hasClass(l)) {
                         return e;
                     }
                 });
             }
             v.stylesheets = n;
             s.setMediaQueries(s);
-            p.each(v.iframes, function(e, t) {
-                var i = p(t);
-                s.initIframe(i, s);
+            p.each(v.iframes, function(e, i) {
+                var t = p(i);
+                s.initIframe(t, s);
             });
         },
-        initIframe: function(t, i) {
-            t.on("mousedown." + v.eventNameSpace, function(e) {
+        initIframe: function(i, t) {
+            i.on("mousedown." + v.eventNameSpace, function(e) {
                 p(r).on("mousemove." + v.eventNameSpace, function() {
-                    i.matchIframeWithMediaQuery(t);
+                    t.matchMediaQueries(i);
                 });
                 p(r).on("mouseup." + v.eventNameSpace, function() {
                     p(r).off("mousemove." + v.eventNameSpace);
                 });
             });
-            i.matchIframeWithMediaQuery(t);
+            t.matchMediaQueries(i);
         },
         setMediaQueries: function(e) {
             if (v.styleElement && v.styleElement.length < 1) {
-                var t = p("<style></style>").addClass(v.styleClass);
-                p(r).find("head").append(t);
-                v.styleElement = t;
+                var i = p("<style></style>").addClass(v.styleClass);
+                p(r).find("head").append(i);
+                v.styleElement = i;
             }
             if (v.hasSetBreakpoints && v.mediaQueryRules) {
                 v.styleElement.append(v.mediaQueryRules);
             } else if (!v.hasSetBreakpoints && !v.mediaQueryRules) {
-                var i = v.stylesheets;
+                var t = v.stylesheets;
                 var c = "";
-                p.each(i, function(d, u) {
+                p.each(t, function(d, u) {
                     var e = u.cssRules.length;
                     var h = 0;
                     var m = 0;
-                    p.each(u.cssRules, function(e, t) {
+                    p.each(u.cssRules, function(e, i) {
                         m++;
-                        if (t.media && t.media[0] && (t.media[0].indexOf("max-width") > -1 || t.media[0].indexOf("min-width") > -1)) {
-                            var i = v.classPrefix + "-ss" + d + "r" + e;
+                        if (i.media && i.media[0] && (i.media[0].indexOf("max-width") > -1 || i.media[0].indexOf("min-width") > -1)) {
+                            var t = v.classPrefix + "-ss" + d + "r" + e;
                             var n = "";
-                            var l = "." + i;
-                            p.each(t.cssRules, function(e, t) {
-                                if (t.selectorText) {
-                                    var i = t.selectorText;
-                                    var s = i.split(",");
-                                    var a = t.cssText.match(/\{.*\}/);
-                                    p.each(s, function(e, t) {
-                                        n = n + " " + l + " " + t + a;
+                            var l = "." + t;
+                            p.each(i.cssRules, function(e, i) {
+                                if (i.selectorText) {
+                                    var t = i.selectorText;
+                                    var s = t.split(",");
+                                    var a = i.cssText.match(/\{.*\}/);
+                                    p.each(s, function(e, i) {
+                                        n = n + " " + l + " " + i + a;
                                     });
                                 }
                             });
                             c = c + n;
                             v.styleElement.append(n);
-                            var s = t.media[0].match(/[0-9]+/g);
+                            var s = i.media[0].match(/[0-9]+/g);
                             s = p.map(s, Number);
-                            var a = t;
+                            var a = i;
                             var r = e;
                             var o = r - h;
                             var f = u;
-                            v.breakpoints[i] = {
+                            v.breakpoints[t] = {
                                 maxWidth: false,
                                 minWidth: false,
                                 deletedRule: a,
@@ -122,14 +122,14 @@
                                 deletedFromStylesheet: f,
                                 px: s
                             };
-                            if (t.media[0].indexOf("max-width") > -1 && t.media[0].indexOf("min-width") > -1) {
-                                v.breakpoints[i].maxWidth = true;
-                                v.breakpoints[i].minWidth = true;
+                            if (i.media[0].indexOf("max-width") > -1 && i.media[0].indexOf("min-width") > -1) {
+                                v.breakpoints[t].maxWidth = true;
+                                v.breakpoints[t].minWidth = true;
                                 h++;
-                            } else if (t.media[0].indexOf("max-width") > -1) {
-                                v.breakpoints[i].maxWidth = true;
-                            } else if (t.media[0].indexOf("min-width") > -1) {
-                                v.breakpoints[i].minWidth = true;
+                            } else if (i.media[0].indexOf("max-width") > -1) {
+                                v.breakpoints[t].maxWidth = true;
+                            } else if (i.media[0].indexOf("min-width") > -1) {
+                                v.breakpoints[t].minWidth = true;
                                 h++;
                             }
                         }
@@ -140,18 +140,18 @@
             }
             p("body").addClass(v.plugin.options.bodyClass);
         },
-        matchIframeWithMediaQuery: function(o) {
+        matchMediaQueries: function(o) {
             var f = o.width();
-            p.each(v.breakpoints, function(e, t) {
-                var i = t.hasBeenDeleted;
+            p.each(v.breakpoints, function(e, i) {
+                var t = i.hasBeenDeleted;
                 var s = e;
-                var a = t.px;
-                var n = t.type;
-                if (t.maxWidth && t.minWidth) {
-                    if (!i) {
-                        t.deletedFromStylesheet.deleteRule(t.deletedRulePosition);
+                var a = i.px;
+                var n = i.type;
+                if (i.maxWidth && i.minWidth) {
+                    if (!t) {
+                        i.deletedFromStylesheet.deleteRule(i.deletedRulePosition);
                     }
-                    t.hasBeenDeleted = true;
+                    i.hasBeenDeleted = true;
                     var l = Math.max.apply(null, a);
                     var r = Math.min.apply(null, a);
                     if (f > r && f < l) {
@@ -161,7 +161,7 @@
                     } else {
                         o.removeClass(s);
                     }
-                } else if (t.maxWidth) {
+                } else if (i.maxWidth) {
                     if (f < a) {
                         if (!o.hasClass(s)) {
                             o.addClass(s);
@@ -169,11 +169,11 @@
                     } else if (f > a) {
                         o.removeClass(s);
                     }
-                } else if (t.minWidth) {
-                    if (!i) {
-                        t.deletedFromStylesheet.deleteRule(t.deletedRulePosition);
+                } else if (i.minWidth) {
+                    if (!t) {
+                        i.deletedFromStylesheet.deleteRule(i.deletedRulePosition);
                     }
-                    t.hasBeenDeleted = true;
+                    i.hasBeenDeleted = true;
                     if (f > a) {
                         if (!o.hasClass(s)) {
                             o.addClass(s);
@@ -186,26 +186,27 @@
             if (v.onWindowResize) {
                 p(e).trigger("resize");
             }
+            p(r).trigger(d + ".matchMediaQueries", o);
         },
         unsetAll: function() {
             p("body").removeClass(v.plugin.options.bodyClass);
-            p.each(v.breakpoints, function(e, t) {
-                var i = e;
-                var s = t.px;
-                var a = t.type;
-                if (t["hasBeenDeleted"]) {
-                    t.deletedFromStylesheet.insertRule(t.deletedRule.cssText, t.addRulePosition);
-                    t["hasBeenDeleted"] = false;
+            p.each(v.breakpoints, function(e, i) {
+                var t = e;
+                var s = i.px;
+                var a = i.type;
+                if (i["hasBeenDeleted"]) {
+                    i.deletedFromStylesheet.insertRule(i.deletedRule.cssText, i.addRulePosition);
+                    i["hasBeenDeleted"] = false;
                     v.iframes.removeClass(e);
                     v.plugin.resetStyle(v.iframes);
                 }
             });
             v.styleElement.text("");
         },
-        setIframeSize: function(e, t) {
+        setIframeSize: function(e, i) {
             var s = false;
             var a = false;
-            var i = v.iframes;
+            var t = v.iframes;
             if (e) {
                 if (e.width) {
                     s = e.width;
@@ -214,57 +215,57 @@
                     a = e.height;
                 }
             }
-            if (t && t.length > 0 && p(t).is(p(v.plugin.options.containerSelector))) {
-                i = t;
+            if (i && i.length > 0 && p(i).is(p(v.plugin.options.containerSelector))) {
+                t = i;
             }
             if (s || a) {
-                p.each(i, function(e, t) {
-                    var i = p(t);
+                p.each(t, function(e, i) {
+                    var t = p(i);
                     if (s) {
-                        i.width(s);
+                        t.width(s);
                     }
                     if (a) {
-                        i.height(a);
+                        t.height(a);
                     }
-                    v.plugin.matchIframeWithMediaQuery(i);
+                    v.plugin.matchMediaQueries(t);
                 });
             }
         },
         resetIframesSize: function(e) {
-            var t = v.iframes;
+            var i = v.iframes;
             if (e && p(e).is(p(v.plugin.options.containerSelector))) {
-                t = e;
+                i = e;
             }
-            p.each(t, function(e, t) {
-                var i = p(t);
-                v.plugin.resetStyle(i);
-                v.plugin.matchIframeWithMediaQuery(i);
+            p.each(i, function(e, i) {
+                var t = p(i);
+                v.plugin.resetStyle(t);
+                v.plugin.matchMediaQueries(t);
             });
         },
         resetStyle: function(e) {
-            p.each(e, function(e, t) {
-                var i = p(t);
-                i.attr("style", "");
+            p.each(e, function(e, i) {
+                var t = p(i);
+                t.attr("style", "");
             });
         },
-        resetAttribute: function(e, i) {
-            p.each(e, function(e, t) {
-                $el = p(t);
-                $el.attr(i, "false");
+        resetAttribute: function(e, t) {
+            p.each(e, function(e, i) {
+                $el = p(i);
+                $el.attr(t, "false");
             });
         }
     });
-    p.fn[o] = function(e) {
+    p.fn[d] = function(e) {
         if (typeof arguments[0] === "string") {
-            var t = arguments[0];
-            var i = Array.prototype.slice.call(arguments, 1);
+            var i = arguments[0];
+            var t = Array.prototype.slice.call(arguments, 1);
             var s = Array.prototype.slice.call(arguments, 2);
             var a;
             this.each(function() {
-                if (p.data(this, "plugin_" + o) && typeof p.data(this, "plugin_" + o)[t] === "function") {
-                    a = p.data(this, "plugin_" + o)[t].apply(this, i, s);
+                if (p.data(this, "plugin_" + d) && typeof p.data(this, "plugin_" + d)[i] === "function") {
+                    a = p.data(this, "plugin_" + d)[i].apply(this, t, s);
                 } else {
-                    throw new Error("Method " + t + " does not exist on jQuery." + o);
+                    throw new Error("Method " + i + " does not exist on jQuery." + d);
                 }
             });
             if (a !== n) {
@@ -274,8 +275,8 @@
             }
         } else if (typeof e === "object" || !e) {
             return this.each(function() {
-                if (!p.data(this, "plugin_" + o)) {
-                    p.data(this, "plugin_" + o, new l(this, e));
+                if (!p.data(this, "plugin_" + d)) {
+                    p.data(this, "plugin_" + d, new l(this, e));
                 }
             });
         }
