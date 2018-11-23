@@ -67,6 +67,7 @@ body.ifr-grid-view .patterns .pattern {
   background: #e6e6e6;
   border: 1px solid #e6e6e6;
   padding: 10px;
+  position: relative;
 }
 body.ifr-active .iframe {
   resize: both;
@@ -77,6 +78,16 @@ body.ifr-active .iframe {
   max-width: 100%;
   overflow: scroll;
   margin-bottom: 40px;
+}
+.iframe-size {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  padding: 3px 6px;
+  z-index: 40;
+  font-family: Courier;
 }
 .tabs {
   display: flex;

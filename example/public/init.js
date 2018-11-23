@@ -58,6 +58,35 @@ $(document).ready(function(){
     $('body').toggleClass('ifr-grid-view');
   });
 
+  var fadeOutTimeout = {};
+  $(document).on('iframeify.matchMediaQueries', function(e, el) {
+    var $el = $(el);
+    var iframeWidth = $el.width();
+    var iframeHeight = $el.height();
+    var $sizeElement = $el.find('.iframe-size');
+    $sizeElement.find('.width').text(iframeWidth);
+    $sizeElement.find('.height').text(iframeHeight);
+
+    if ($sizeElement.is(':hidden')) {
+      $sizeElement.fadeIn();
+    }
+
+    var timeoutId;
+    if ($el.data('ifrUniqueId')) {
+      timeoutId = $el.data('ifrUniqueId');
+    }
+    else {
+      var newUniqueId = Math.random().toString(36).substr(2, 9);
+      $el.data('ifrUniqueId', newUniqueId);
+      timeoutId = newUniqueId;
+    }
+
+    clearTimeout(fadeOutTimeout[timeoutId]);
+    fadeOutTimeout[timeoutId] = setTimeout(function(){
+      $sizeElement.fadeOut();
+    }, 2000);
+  });
+
 
 
   // Resize event to show example

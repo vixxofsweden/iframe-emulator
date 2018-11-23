@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" class="ifr-iframe-stylesheet" href="bootstrap.css">
-  <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="../dist/iframeify.min.js"></script>
-  <script type="text/javascript" src="init.js"></script>
+  <title>iframeify example</title>
+  <link rel="stylesheet" href="./public/styles.css">
+  <link rel="stylesheet" class="ifr-iframe-stylesheet" href="./public/bootstrap.css">
+  <script type="text/javascript" src="./public/jquery.min.js"></script>
+  <script type="text/javascript" src="./public/iframeify.min.js"></script>
+  <script type="text/javascript" src="./public/init.js"></script>
 </head>
 <body>
 
@@ -32,11 +33,18 @@
     </a>
   </div>
 </div>
+<br/>
+<strong>Get it here</strong>
+<p><strong>npm: </strong> <a href="https://www.npmjs.com/package/iframeify" target="_blank">https://www.npmjs.com/package/iframeify</a>
+<br/><strong>github: </strong> <a href="https://github.com/vixxofsweden/iframeify" target="_blank">https://github.com/vixxofsweden/iframeify</a></p>
 
 <div class="patterns">
   <div class="pattern">
     <h1>Example pattern 1</h1>
     <div class="iframe enabled" id="iframe1">
+      <div class="iframe-size" style="display: none;">
+        <span class="width"></span> x <span class="height"></span>
+      </div>
       <div class="container">
           <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
@@ -263,6 +271,9 @@
       </a>
     </div>
     <div class="iframe enabled" id="iframe2">
+      <div class="iframe-size" style="display: none;">
+        <span class="width"></span> x <span class="height"></span>
+      </div>
       <div class="container">
 
             <div class="row">
@@ -415,7 +426,9 @@
       resizing the div will also emulate the responsive behaviour created with JS</p>
     <div class="iframe enabled">
       <div class="container">
-
+        <div class="iframe-size" style="display: none;">
+          <span class="width"></span> x <span class="height"></span>
+        </div>
         <div class="tabs">
           <div class="tab">
             Tab
