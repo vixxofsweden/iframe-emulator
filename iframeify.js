@@ -216,7 +216,7 @@
       $(document).trigger(pluginName + '.matchMediaQueries', $iframe);
     },
 
-    unsetAll: function() {
+    unsetQueries: function() {
       $('body').removeClass(globals.plugin.options.bodyClass);
       $.each(globals.breakpoints, function(key, classObj) {
         var mqClass = key;
@@ -226,12 +226,20 @@
           classObj.deletedFromStylesheet.insertRule(classObj.deletedRule.cssText, classObj.addRulePosition);
           classObj['hasBeenDeleted'] = false;
           globals.iframes.removeClass(key);
-          globals.plugin.resetStyle(globals.iframes);
         }
       });
       globals.styleElement.text('');
     },
-
+    resetQueries: function() {
+      globals.hasSetBreakpoints = false;
+      globals.mediaQueryRules = false;
+      globals.breakpoints = {};
+    },
+    destroy: function() {
+      globals.plugin.unsetQueries();
+      globals.plugin.resetQueries();
+      globals.plugin.resetStyle(globals.iframes);
+    },
     setIframeSize: function(args, target) {
       var predefinedWidth = false;
       var predefinedHeight = false;

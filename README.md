@@ -36,9 +36,15 @@ $(document).iframeify(options);
 Use with `resize: both;` for a great option to resize the faux iframe by dragging it. Note: Limited browser support.
 
 
-## Using methods to create controls
+## Methods
 
-### Setting predefined sizes
+- `unsetQueries`: unset all the media queries (use native media queries in css file instead), but keep them saved in the JS object.
+- `resetQueries`: resets and removes all media queries
+- `destroy`: executes `unsetQueries`, `resetQueries` and resets the inline styling (width, height etc) on the faux iframes
+
+### Examples
+
+#### Setting predefined sizes
 
 
 **Global controls**
@@ -68,7 +74,7 @@ $('.ifr-size-selector').click(function(e) {
 });
 ```
 
-### Reseting sizes
+#### Reseting sizes
 
 **Global controls**
 

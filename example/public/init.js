@@ -11,7 +11,7 @@ $(document).ready(function(){
 
   $('.iframe-toggle').click(function(){
     if ($('body').hasClass('ifr-active')) {
-      $(document).iframeify('unsetAll');
+      $(document).iframeify('unsetQueries');
     }
     else {
       $(document).iframeify('init');
