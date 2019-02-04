@@ -1,5 +1,5 @@
-(function(c, e, r, n) {
-    var u = "iframeify", t = {
+(function(c, e, n, l) {
+    var r = "iframeify", t = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,
@@ -13,20 +13,20 @@
         stylesheets: [],
         styleClass: "ifr-styles",
         styleElement: [],
-        eventNameSpace: "plugin_" + u,
+        eventNameSpace: "plugin_" + r,
         plugin: false,
         pluginElement: false,
         onWindowResize: false
     };
-    function l(e, i) {
+    function o(e, i) {
         this.element = e;
         this.$element = c(e);
         this.options = c.extend({}, t, i);
         this._defaults = t;
-        this._name = u;
+        this._name = r;
         this.init();
     }
-    c.extend(l.prototype = {
+    c.extend(o.prototype = {
         init: function() {
             var s;
             if (this && this.options) {
@@ -37,7 +37,7 @@
                 throw new Error("No plugin object found");
             }
             var e = s.options.classPrefix;
-            var i = "plugin_" + u;
+            var i = "plugin_" + r;
             var t = c(s.options.containerSelector);
             v.iframes = t;
             v.classPrefix = s.options.classPrefix;
@@ -45,31 +45,37 @@
             v.styleClass = s.options.classPrefix + "-styles";
             v.plugin = s;
             v.pluginElement = this.$element;
-            var a = r.styleSheets;
-            var n = a;
-            if (s.options.stylesheetClass) {
-                var l = s.options.stylesheetClass;
-                n = c.map(a, function(e, i) {
-                    var t = c(e.ownerNode);
-                    if (t.hasClass(l)) {
-                        return e;
-                    }
-                });
-            }
-            v.stylesheets = n;
+            s.initStylesheets();
             s.setMediaQueries(s);
             c.each(v.iframes, function(e, i) {
                 var t = c(i);
                 s.initIframe(t, s);
             });
         },
+        initStylesheets: function() {
+            var e = n.styleSheets;
+            var s = v.plugin.options.stylesheetClass;
+            var i = e;
+            if (s) {
+                i = c.map(e, function(e, i) {
+                    var t = c(e.ownerNode);
+                    if (t.hasClass(s)) {
+                        return e;
+                    }
+                });
+            }
+            v.stylesheets = i;
+        },
         initIframe: function(i, t) {
-            i.on("mousedown." + v.eventNameSpace, function(e) {
-                c(r).on("mousemove." + v.eventNameSpace, function() {
+            var e = "mousedown." + v.eventNameSpace;
+            var s = "mousemove." + v.eventNameSpace;
+            var a = "mouseup." + v.eventNameSpace;
+            i.off(e).on(e, function(e) {
+                c(n).off(s).on(s, function() {
                     t.matchMediaQueries(i);
                 });
-                c(r).on("mouseup." + v.eventNameSpace, function() {
-                    c(r).off("mousemove." + v.eventNameSpace);
+                c(n).off(a).on(a, function() {
+                    c(n).off(s);
                 });
             });
             t.matchMediaQueries(i);
@@ -77,7 +83,7 @@
         setMediaQueries: function(e) {
             if (v.styleElement && v.styleElement.length < 1) {
                 var i = c("<style></style>").addClass(v.styleClass);
-                c(r).find("head").append(i);
+                c(n).find("head").append(i);
                 v.styleElement = i;
             }
             if (v.hasSetBreakpoints && v.mediaQueryRules) {
@@ -186,7 +192,7 @@
             if (v.onWindowResize) {
                 c(e).trigger("resize");
             }
-            c(r).trigger(u + ".matchMediaQueries", o);
+            c(n).trigger(r + ".matchMediaQueries", o);
         },
         unsetQueries: function() {
             c("body").removeClass(v.plugin.options.bodyClass);
@@ -211,6 +217,12 @@
             v.plugin.unsetQueries();
             v.plugin.resetQueries();
             v.plugin.resetStyle(v.iframes);
+            var e = "mousedown." + v.eventNameSpace;
+            var i = "mousemove." + v.eventNameSpace;
+            var t = "mouseup." + v.eventNameSpace;
+            v.iframes.off(e);
+            c(n).off(i);
+            c(n).off(t);
         },
         setIframeSize: function(e, i) {
             var s = false;
@@ -264,28 +276,28 @@
             });
         }
     });
-    c.fn[u] = function(e) {
+    c.fn[r] = function(e) {
         if (typeof arguments[0] === "string") {
             var i = arguments[0];
             var t = Array.prototype.slice.call(arguments, 1);
             var s = Array.prototype.slice.call(arguments, 2);
             var a;
             this.each(function() {
-                if (c.data(this, "plugin_" + u) && typeof c.data(this, "plugin_" + u)[i] === "function") {
-                    a = c.data(this, "plugin_" + u)[i].apply(this, t, s);
+                if (c.data(this, "plugin_" + r) && typeof c.data(this, "plugin_" + r)[i] === "function") {
+                    a = c.data(this, "plugin_" + r)[i].apply(this, t, s);
                 } else {
-                    throw new Error("Method " + i + " does not exist on jQuery." + u);
+                    throw new Error("Method " + i + " does not exist on jQuery." + r);
                 }
             });
-            if (a !== n) {
+            if (a !== l) {
                 return a;
             } else {
                 return this;
             }
         } else if (typeof e === "object" || !e) {
             return this.each(function() {
-                if (!c.data(this, "plugin_" + u)) {
-                    c.data(this, "plugin_" + u, new l(this, e));
+                if (!c.data(this, "plugin_" + r)) {
+                    c.data(this, "plugin_" + r, new o(this, e));
                 }
             });
         }

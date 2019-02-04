@@ -55,19 +55,7 @@
       globals.plugin = thisPlugin;
       globals.pluginElement = this.$element;
 
-      var allStyleSheets = document.styleSheets;
-      var selectedStylesheets = allStyleSheets;
-      if (thisPlugin.options.stylesheetClass) {
-        var stylesheetClass = thisPlugin.options.stylesheetClass;
-        selectedStylesheets = $.map(allStyleSheets, function( n, i ) {
-          var $el = $(n.ownerNode);
-          if ($el.hasClass(stylesheetClass)) {
-            return n;
-          }
-        });
-      }
-      globals.stylesheets = selectedStylesheets;
-
+      thisPlugin.initStylesheets();
       thisPlugin.setMediaQueries(thisPlugin);
 
       $.each(globals.iframes, function(i, iframe) {
@@ -76,14 +64,32 @@
       });
     },
 
+    initStylesheets: function() {
+      var allStyleSheets = document.styleSheets;
+      var stylesheetClass = globals.plugin.options.stylesheetClass;
+      var selectedStylesheets = allStyleSheets;
+      if (stylesheetClass) {
+        selectedStylesheets = $.map(allStyleSheets, function( n, i ) {
+          var $el = $(n.ownerNode);
+          if ($el.hasClass(stylesheetClass)) {
+            return n;
+          }
+        });
+      }
+      globals.stylesheets = selectedStylesheets;
+    },
+
     initIframe: function($iframe, thisPlugin) {
-      $iframe.on('mousedown.' + globals.eventNameSpace, function(e){
-        $(document).on('mousemove.' + globals.eventNameSpace, function() {
+      var mousedownEvent = 'mousedown.' + globals.eventNameSpace;
+      var mousemoveEvent = 'mousemove.' + globals.eventNameSpace;
+      var mouseupEvent = 'mouseup.' + globals.eventNameSpace;
+      $iframe.off(mousedownEvent).on(mousedownEvent, function(e){
+        $(document).off(mousemoveEvent).on(mousemoveEvent, function() {
           thisPlugin.matchMediaQueries($iframe);
         });
 
-        $(document).on('mouseup.' + globals.eventNameSpace, function() {
-          $(document).off('mousemove.' + globals.eventNameSpace);
+        $(document).off(mouseupEvent).on(mouseupEvent, function() {
+          $(document).off(mousemoveEvent);
         });
       });
       thisPlugin.matchMediaQueries($iframe);
@@ -239,6 +245,12 @@
       globals.plugin.unsetQueries();
       globals.plugin.resetQueries();
       globals.plugin.resetStyle(globals.iframes);
+      var mousedownEvent = 'mousedown.' + globals.eventNameSpace;
+      var mousemoveEvent = 'mousemove.' + globals.eventNameSpace;
+      var mouseupEvent = 'mouseup.' + globals.eventNameSpace;
+      globals.iframes.off(mousedownEvent);
+      $(document).off(mousemoveEvent);
+      $(document).off(mouseupEvent);
     },
     setIframeSize: function(args, target) {
       var predefinedWidth = false;

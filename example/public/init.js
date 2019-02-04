@@ -12,9 +12,10 @@ $(document).ready(function(){
   $('.iframe-toggle').click(function(){
     if ($('body').hasClass('ifr-active')) {
       $(document).iframeify('unsetQueries');
+      $('.iframe').attr('style', '');
     }
     else {
-      $(document).iframeify('init');
+      $(document).iframeify('setMediaQueries');
     }
     $(this).toggleClass('iframe-toggle-disabled');
   })
