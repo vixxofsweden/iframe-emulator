@@ -9,8 +9,10 @@
     onWindowResize: false
   },
   globals = {
-    breakpoints: {},
+    breakpoints: false,
     hasSetBreakpoints: false,
+    mediaqueries: false,
+    hasSetMediaQueries: false,
     mediaQueryRules: false,
     iframes: [],
     stylesheets: [],
@@ -101,12 +103,22 @@
         $(document).find('head').append(styleElement);
         globals.styleElement = styleElement;
       }
-      if (globals.hasSetBreakpoints && globals.mediaQueryRules) {
+      if (globals.hasSetMediaQueries && globals.mediaQueryRules) {
         globals.styleElement.append(globals.mediaQueryRules);
       }
-      else if (!globals.hasSetBreakpoints && !globals.mediaQueryRules) {
+      else if (!globals.hasSetMediaQueries && !globals.mediaQueryRules) {
         var styleSheets = globals.stylesheets;
         var allCss = '';
+        if (!globals.breakpoints) {
+          globals.breakpoints = {
+            ranges: [],
+            maxWidth: [],
+            minWidth: [],
+          };
+        }
+        if (!globals.mediaqueries) {
+          globals.mediaqueries = {};
+        }
         $.each(styleSheets, function(i, styleObject) {
           var noOfRules = styleObject.cssRules.length;
           var ruleDeleteIndex = 0;
@@ -137,83 +149,118 @@
               var currentRuleDeletePosition = currentRulePosition - ruleDeleteIndex;
               var currentRoleStylesheet = styleObject;
 
-              globals.breakpoints[newClass] = {
+              globals.mediaqueries[newClass] = {
                 maxWidth: false,
                 minWidth: false,
                 deletedRule: currentRule,
                 deletedRulePosition: currentRuleDeletePosition,
                 addRulePosition: currentRulePosition,
                 deletedFromStylesheet: currentRoleStylesheet,
-                px: pxVal
+                px: pxVal,
+                class: newClass
               }
 
+              // Max comes first
               if (rule.media[0].indexOf('max-width') > -1 && rule.media[0].indexOf('min-width') > -1) {
-                globals.breakpoints[newClass].maxWidth = true;
-                globals.breakpoints[newClass].minWidth = true;
+                var maxWidth = pxVal[0];
+                var minWidth = pxVal[1];
+                globals.mediaqueries[newClass].maxWidth = true;
+                globals.mediaqueries[newClass].minWidth = true;
+                var range = maxWidth + '-' + minWidth;
+                if (!globals.breakpoints.ranges[range]) {
+                  globals.breakpoints.ranges[range] = {
+                    mediaQueries: []
+                  };
+                }
+                globals.breakpoints.ranges[range].mediaQueries.push(globals.mediaqueries[newClass]);
                 ruleDeleteIndex++;
               }
               else if (rule.media[0].indexOf('max-width') > -1) {
-                globals.breakpoints[newClass].maxWidth = true;
+                globals.mediaqueries[newClass].maxWidth = true;
+                var key = pxVal[0];
+                if (!globals.breakpoints.maxWidth[key]) {
+                  globals.breakpoints.maxWidth[key] = {
+                    mediaQueries: []
+                  };
+                }
+                globals.breakpoints.maxWidth[key].mediaQueries.push(globals.mediaqueries[newClass]);
+                ruleDeleteIndex++;
               }
               else if (rule.media[0].indexOf('min-width') > -1) {
-                globals.breakpoints[newClass].minWidth = true;
+                globals.mediaqueries[newClass].minWidth = true;
+                var key = pxVal[0];
+                if (!globals.breakpoints.minWidth[key]) {
+                  globals.breakpoints.minWidth[key] = {
+                    mediaQueries: []
+                  };
+                }
+                globals.breakpoints.minWidth[key].mediaQueries.push(globals.mediaqueries[newClass]);
                 ruleDeleteIndex++;
               }
             }
           });
       });
       globals.mediaQueryRules = allCss;
-      globals.hasSetBreakpoints = true;
+      globals.hasSetMediaQueries = true;
     }
+
+    $.each(globals.mediaqueries, function(key, obj) {
+      if(!obj.hasBeenDeleted) {
+        obj.deletedFromStylesheet.deleteRule(obj.deletedRulePosition);
+      }
+      globals.mediaqueries[key].hasBeenDeleted = true;
+    });
+
     $('body').addClass(globals.plugin.options.bodyClass);
     },
     matchMediaQueries: function($iframe) {
       var iframeWidth = $iframe.width();
-      $.each(globals.breakpoints, function(key, classObj) {
+      var mediaQueries = [];
+
+      $.each(globals.breakpoints, function(queryType, typeObject) {
+        if (queryType == 'maxWidth') {
+          for (var key in typeObject) {
+            if (iframeWidth <= key) {
+              $.each(typeObject[key].mediaQueries, function(k, maxObj) {
+                mediaQueries.push(maxObj);
+              });
+            }
+          }
+        }
+        else if (queryType == 'minWidth') {
+          for (var key in typeObject) {
+            if (iframeWidth >= key) {
+              $.each(typeObject[key].mediaQueries, function(l, minObj) {
+                mediaQueries.push(minObj);
+              });
+            }
+          }
+        }
+        else if (queryType == 'ranges') {
+          for (var key in typeObject) {
+            var rangeValues = key.split('-');
+            var maxWidth = rangeValues[0];
+            var minWidth = rangeValues[1];
+            if (iframeWidth <= maxWidth && iframeWidth >= minWidth) {
+              $.each(typeObject[key].mediaQueries, function(h, rangeObj) {
+                mediaQueries.push(rangeObj);
+              });
+            }
+          }
+        }
+      });
+
+      var classMatch = new RegExp(globals.classPrefix + "\-[a-z0-9]*", 'g');
+      var classes = $iframe.attr('class').replace(classMatch, '');
+      $iframe.attr('class', classes);
+
+      $.each(mediaQueries, function(r, classObj) {
         var hasBeenDeleted = classObj.hasBeenDeleted;
-        var mqClass = key;
+        var mqClass = classObj.class;
         var mqPx = classObj.px;
         var mqType = classObj.type;
-        if (classObj.maxWidth && classObj.minWidth) {
-          if(!hasBeenDeleted) {
-            classObj.deletedFromStylesheet.deleteRule(classObj.deletedRulePosition);
-          }
-          classObj.hasBeenDeleted = true;
-          var max = Math.max.apply(null, mqPx);
-          var min = Math.min.apply(null, mqPx);
-          if (iframeWidth > min && iframeWidth < max) {
-            if (!$iframe.hasClass(mqClass)) {
-              $iframe.addClass(mqClass);
-            }
-          }
-          else {
-            $iframe.removeClass(mqClass);
-          }
-        }
-
-        else if (classObj.maxWidth) {
-          if (iframeWidth < mqPx) {
-            if (!$iframe.hasClass(mqClass)) {
-              $iframe.addClass(mqClass);
-            }
-          }
-          else if (iframeWidth > mqPx) {
-            $iframe.removeClass(mqClass);
-          }
-        }
-        else if (classObj.minWidth) {
-          if(!hasBeenDeleted) {
-            classObj.deletedFromStylesheet.deleteRule(classObj.deletedRulePosition);
-          }
-          classObj.hasBeenDeleted = true;
-          if (iframeWidth > mqPx) {
-            if (!$iframe.hasClass(mqClass)) {
-              $iframe.addClass(mqClass);
-            }
-          }
-          else if (iframeWidth < mqPx) {
-            $iframe.removeClass(mqClass);
-          }
+        if (!$iframe.hasClass(mqClass)) {
+          $iframe.addClass(mqClass);
         }
       });
       if (globals.onWindowResize) {
@@ -224,22 +271,25 @@
 
     unsetQueries: function() {
       $('body').removeClass(globals.plugin.options.bodyClass);
-      $.each(globals.breakpoints, function(key, classObj) {
+      $.each(globals.mediaqueries, function(key, classObj) {
         var mqClass = key;
         var mqPx = classObj.px;
         var mqType = classObj.type;
         if (classObj['hasBeenDeleted']) {
           classObj.deletedFromStylesheet.insertRule(classObj.deletedRule.cssText, classObj.addRulePosition);
-          classObj['hasBeenDeleted'] = false;
-          globals.iframes.removeClass(key);
+          globals.mediaqueries[key].hasBeenDeleted = false;
+          var classMatch = new RegExp(globals.classPrefix + "\-[a-z0-9]*", 'g');
+          var classes = globals.iframes.attr('class').replace(classMatch, '');
+          globals.iframes.attr('class', classes);
         }
       });
       globals.styleElement.text('');
     },
     resetQueries: function() {
-      globals.hasSetBreakpoints = false;
+      globals.hasSetMediaQueries = false;
       globals.mediaQueryRules = false;
-      globals.breakpoints = {};
+      globals.mediaqueries = false;
+      globals.breakpoints = false;
     },
     destroy: function() {
       globals.plugin.unsetQueries();

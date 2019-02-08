@@ -16,6 +16,9 @@ $(document).ready(function(){
     }
     else {
       $(document).iframeify('setMediaQueries');
+      $('.iframe').each(function(){
+        $(document).iframeify('matchMediaQueries', $(this));
+      })
     }
     $(this).toggleClass('iframe-toggle-disabled');
   })

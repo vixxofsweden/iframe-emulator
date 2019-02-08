@@ -1,303 +1,351 @@
-(function(c, e, n, l) {
-    var r = "iframeify", t = {
+(function(x, s, n, r) {
+    var u = "iframeify", a = {
         containerSelector: ".ifr-iframe",
         classPrefix: "ifr",
         stylesheetClass: false,
         bodyClass: "ifr-active",
         onWindowResize: false
-    }, v = {
-        breakpoints: {},
+    }, Q = {
+        breakpoints: false,
         hasSetBreakpoints: false,
+        mediaqueries: false,
+        hasSetMediaQueries: false,
         mediaQueryRules: false,
         iframes: [],
         stylesheets: [],
         styleClass: "ifr-styles",
         styleElement: [],
-        eventNameSpace: "plugin_" + r,
+        eventNameSpace: "plugin_" + u,
         plugin: false,
         pluginElement: false,
         onWindowResize: false
     };
-    function o(e, i) {
+    function l(e, i) {
         this.element = e;
-        this.$element = c(e);
-        this.options = c.extend({}, t, i);
-        this._defaults = t;
-        this._name = r;
+        this.$element = x(e);
+        this.options = x.extend({}, a, i);
+        this._defaults = a;
+        this._name = u;
         this.init();
     }
-    c.extend(o.prototype = {
+    x.extend(l.prototype = {
         init: function() {
-            var s;
+            var a;
             if (this && this.options) {
-                s = this;
-            } else if (v.plugin && v.plugin.options) {
-                s = v.plugin;
+                a = this;
+            } else if (Q.plugin && Q.plugin.options) {
+                a = Q.plugin;
             } else {
                 throw new Error("No plugin object found");
             }
-            var e = s.options.classPrefix;
-            var i = "plugin_" + r;
-            var t = c(s.options.containerSelector);
-            v.iframes = t;
-            v.classPrefix = s.options.classPrefix;
-            v.onWindowResize = s.options.onWindowResize;
-            v.styleClass = s.options.classPrefix + "-styles";
-            v.plugin = s;
-            v.pluginElement = this.$element;
-            s.initStylesheets();
-            s.setMediaQueries(s);
-            c.each(v.iframes, function(e, i) {
-                var t = c(i);
-                s.initIframe(t, s);
+            var e = a.options.classPrefix;
+            var i = "plugin_" + u;
+            var s = x(a.options.containerSelector);
+            Q.iframes = s;
+            Q.classPrefix = a.options.classPrefix;
+            Q.onWindowResize = a.options.onWindowResize;
+            Q.styleClass = a.options.classPrefix + "-styles";
+            Q.plugin = a;
+            Q.pluginElement = this.$element;
+            a.initStylesheets();
+            a.setMediaQueries(a);
+            x.each(Q.iframes, function(e, i) {
+                var s = x(i);
+                a.initIframe(s, a);
             });
         },
         initStylesheets: function() {
             var e = n.styleSheets;
-            var s = v.plugin.options.stylesheetClass;
+            var a = Q.plugin.options.stylesheetClass;
             var i = e;
-            if (s) {
-                i = c.map(e, function(e, i) {
-                    var t = c(e.ownerNode);
-                    if (t.hasClass(s)) {
+            if (a) {
+                i = x.map(e, function(e, i) {
+                    var s = x(e.ownerNode);
+                    if (s.hasClass(a)) {
                         return e;
                     }
                 });
             }
-            v.stylesheets = i;
+            Q.stylesheets = i;
         },
-        initIframe: function(i, t) {
-            var e = "mousedown." + v.eventNameSpace;
-            var s = "mousemove." + v.eventNameSpace;
-            var a = "mouseup." + v.eventNameSpace;
+        initIframe: function(i, s) {
+            var e = "mousedown." + Q.eventNameSpace;
+            var a = "mousemove." + Q.eventNameSpace;
+            var t = "mouseup." + Q.eventNameSpace;
             i.off(e).on(e, function(e) {
-                c(n).off(s).on(s, function() {
-                    t.matchMediaQueries(i);
+                x(n).off(a).on(a, function() {
+                    s.matchMediaQueries(i);
                 });
-                c(n).off(a).on(a, function() {
-                    c(n).off(s);
+                x(n).off(t).on(t, function() {
+                    x(n).off(a);
                 });
             });
-            t.matchMediaQueries(i);
+            s.matchMediaQueries(i);
         },
         setMediaQueries: function(e) {
-            if (v.styleElement && v.styleElement.length < 1) {
-                var i = c("<style></style>").addClass(v.styleClass);
-                c(n).find("head").append(i);
-                v.styleElement = i;
+            if (Q.styleElement && Q.styleElement.length < 1) {
+                var i = x("<style></style>").addClass(Q.styleClass);
+                x(n).find("head").append(i);
+                Q.styleElement = i;
             }
-            if (v.hasSetBreakpoints && v.mediaQueryRules) {
-                v.styleElement.append(v.mediaQueryRules);
-            } else if (!v.hasSetBreakpoints && !v.mediaQueryRules) {
-                var t = v.stylesheets;
-                var p = "";
-                c.each(t, function(u, d) {
-                    var e = d.cssRules.length;
-                    var h = 0;
-                    var m = 0;
-                    c.each(d.cssRules, function(e, i) {
-                        m++;
+            if (Q.hasSetMediaQueries && Q.mediaQueryRules) {
+                Q.styleElement.append(Q.mediaQueryRules);
+            } else if (!Q.hasSetMediaQueries && !Q.mediaQueryRules) {
+                var s = Q.stylesheets;
+                var g = "";
+                if (!Q.breakpoints) {
+                    Q.breakpoints = {
+                        ranges: [],
+                        maxWidth: [],
+                        minWidth: []
+                    };
+                }
+                if (!Q.mediaqueries) {
+                    Q.mediaqueries = {};
+                }
+                x.each(s, function(c, p) {
+                    var e = p.cssRules.length;
+                    var v = 0;
+                    var y = 0;
+                    x.each(p.cssRules, function(e, i) {
+                        y++;
                         if (i.media && i.media[0] && (i.media[0].indexOf("max-width") > -1 || i.media[0].indexOf("min-width") > -1)) {
-                            var t = v.classPrefix + "-ss" + u + "r" + e;
+                            var s = Q.classPrefix + "-ss" + c + "r" + e;
                             var n = "";
-                            var l = "." + t;
-                            c.each(i.cssRules, function(e, i) {
+                            var r = "." + s;
+                            x.each(i.cssRules, function(e, i) {
                                 if (i.selectorText) {
-                                    var t = i.selectorText;
-                                    var s = t.split(",");
-                                    var a = i.cssText.match(/\{.*\}/);
-                                    c.each(s, function(e, i) {
-                                        n = n + " " + l + " " + i + a;
+                                    var s = i.selectorText;
+                                    var a = s.split(",");
+                                    var t = i.cssText.match(/\{.*\}/);
+                                    x.each(a, function(e, i) {
+                                        n = n + " " + r + " " + i + t;
                                     });
                                 }
                             });
-                            p = p + n;
-                            v.styleElement.append(n);
-                            var s = i.media[0].match(/[0-9]+/g);
-                            s = c.map(s, Number);
-                            var a = i;
-                            var r = e;
-                            var o = r - h;
-                            var f = d;
-                            v.breakpoints[t] = {
+                            g = g + n;
+                            Q.styleElement.append(n);
+                            var a = i.media[0].match(/[0-9]+/g);
+                            a = x.map(a, Number);
+                            var t = i;
+                            var l = e;
+                            var o = l - v;
+                            var u = p;
+                            Q.mediaqueries[s] = {
                                 maxWidth: false,
                                 minWidth: false,
-                                deletedRule: a,
+                                deletedRule: t,
                                 deletedRulePosition: o,
-                                addRulePosition: r,
-                                deletedFromStylesheet: f,
-                                px: s
+                                addRulePosition: l,
+                                deletedFromStylesheet: u,
+                                px: a,
+                                class: s
                             };
                             if (i.media[0].indexOf("max-width") > -1 && i.media[0].indexOf("min-width") > -1) {
-                                v.breakpoints[t].maxWidth = true;
-                                v.breakpoints[t].minWidth = true;
-                                h++;
+                                var f = a[0];
+                                var d = a[1];
+                                Q.mediaqueries[s].maxWidth = true;
+                                Q.mediaqueries[s].minWidth = true;
+                                var m = f + "-" + d;
+                                if (!Q.breakpoints.ranges[m]) {
+                                    Q.breakpoints.ranges[m] = {
+                                        mediaQueries: []
+                                    };
+                                }
+                                Q.breakpoints.ranges[m].mediaQueries.push(Q.mediaqueries[s]);
+                                v++;
                             } else if (i.media[0].indexOf("max-width") > -1) {
-                                v.breakpoints[t].maxWidth = true;
+                                Q.mediaqueries[s].maxWidth = true;
+                                var h = a[0];
+                                if (!Q.breakpoints.maxWidth[h]) {
+                                    Q.breakpoints.maxWidth[h] = {
+                                        mediaQueries: []
+                                    };
+                                }
+                                Q.breakpoints.maxWidth[h].mediaQueries.push(Q.mediaqueries[s]);
+                                v++;
                             } else if (i.media[0].indexOf("min-width") > -1) {
-                                v.breakpoints[t].minWidth = true;
-                                h++;
+                                Q.mediaqueries[s].minWidth = true;
+                                var h = a[0];
+                                if (!Q.breakpoints.minWidth[h]) {
+                                    Q.breakpoints.minWidth[h] = {
+                                        mediaQueries: []
+                                    };
+                                }
+                                Q.breakpoints.minWidth[h].mediaQueries.push(Q.mediaqueries[s]);
+                                v++;
                             }
                         }
                     });
                 });
-                v.mediaQueryRules = p;
-                v.hasSetBreakpoints = true;
+                Q.mediaQueryRules = g;
+                Q.hasSetMediaQueries = true;
             }
-            c("body").addClass(v.plugin.options.bodyClass);
+            x.each(Q.mediaqueries, function(e, i) {
+                if (!i.hasBeenDeleted) {
+                    i.deletedFromStylesheet.deleteRule(i.deletedRulePosition);
+                }
+                Q.mediaqueries[e].hasBeenDeleted = true;
+            });
+            x("body").addClass(Q.plugin.options.bodyClass);
         },
-        matchMediaQueries: function(o) {
-            var f = o.width();
-            c.each(v.breakpoints, function(e, i) {
-                var t = i.hasBeenDeleted;
-                var s = e;
-                var a = i.px;
-                var n = i.type;
-                if (i.maxWidth && i.minWidth) {
-                    if (!t) {
-                        i.deletedFromStylesheet.deleteRule(i.deletedRulePosition);
-                    }
-                    i.hasBeenDeleted = true;
-                    var l = Math.max.apply(null, a);
-                    var r = Math.min.apply(null, a);
-                    if (f > r && f < l) {
-                        if (!o.hasClass(s)) {
-                            o.addClass(s);
+        matchMediaQueries: function(r) {
+            var l = r.width();
+            var o = [];
+            x.each(Q.breakpoints, function(e, i) {
+                if (e == "maxWidth") {
+                    for (var s in i) {
+                        if (l <= s) {
+                            x.each(i[s].mediaQueries, function(e, i) {
+                                o.push(i);
+                            });
                         }
-                    } else {
-                        o.removeClass(s);
                     }
-                } else if (i.maxWidth) {
-                    if (f < a) {
-                        if (!o.hasClass(s)) {
-                            o.addClass(s);
+                } else if (e == "minWidth") {
+                    for (var s in i) {
+                        if (l >= s) {
+                            x.each(i[s].mediaQueries, function(e, i) {
+                                o.push(i);
+                            });
                         }
-                    } else if (f > a) {
-                        o.removeClass(s);
                     }
-                } else if (i.minWidth) {
-                    if (!t) {
-                        i.deletedFromStylesheet.deleteRule(i.deletedRulePosition);
-                    }
-                    i.hasBeenDeleted = true;
-                    if (f > a) {
-                        if (!o.hasClass(s)) {
-                            o.addClass(s);
+                } else if (e == "ranges") {
+                    for (var s in i) {
+                        var a = s.split("-");
+                        var t = a[0];
+                        var n = a[1];
+                        if (l <= t && l >= n) {
+                            x.each(i[s].mediaQueries, function(e, i) {
+                                o.push(i);
+                            });
                         }
-                    } else if (f < a) {
-                        o.removeClass(s);
                     }
                 }
             });
-            if (v.onWindowResize) {
-                c(e).trigger("resize");
+            var e = new RegExp(Q.classPrefix + "-[a-z0-9]*", "g");
+            var i = r.attr("class").replace(e, "");
+            r.attr("class", i);
+            x.each(o, function(e, i) {
+                var s = i.hasBeenDeleted;
+                var a = i.class;
+                var t = i.px;
+                var n = i.type;
+                if (!r.hasClass(a)) {
+                    r.addClass(a);
+                }
+            });
+            if (Q.onWindowResize) {
+                x(s).trigger("resize");
             }
-            c(n).trigger(r + ".matchMediaQueries", o);
+            x(n).trigger(u + ".matchMediaQueries", r);
         },
         unsetQueries: function() {
-            c("body").removeClass(v.plugin.options.bodyClass);
-            c.each(v.breakpoints, function(e, i) {
-                var t = e;
-                var s = i.px;
-                var a = i.type;
+            x("body").removeClass(Q.plugin.options.bodyClass);
+            x.each(Q.mediaqueries, function(e, i) {
+                var s = e;
+                var a = i.px;
+                var t = i.type;
                 if (i["hasBeenDeleted"]) {
                     i.deletedFromStylesheet.insertRule(i.deletedRule.cssText, i.addRulePosition);
-                    i["hasBeenDeleted"] = false;
-                    v.iframes.removeClass(e);
+                    Q.mediaqueries[e].hasBeenDeleted = false;
+                    var n = new RegExp(Q.classPrefix + "-[a-z0-9]*", "g");
+                    var r = Q.iframes.attr("class").replace(n, "");
+                    Q.iframes.attr("class", r);
                 }
             });
-            v.styleElement.text("");
+            Q.styleElement.text("");
         },
         resetQueries: function() {
-            v.hasSetBreakpoints = false;
-            v.mediaQueryRules = false;
-            v.breakpoints = {};
+            Q.hasSetMediaQueries = false;
+            Q.mediaQueryRules = false;
+            Q.mediaqueries = false;
+            Q.breakpoints = false;
         },
         destroy: function() {
-            v.plugin.unsetQueries();
-            v.plugin.resetQueries();
-            v.plugin.resetStyle(v.iframes);
-            var e = "mousedown." + v.eventNameSpace;
-            var i = "mousemove." + v.eventNameSpace;
-            var t = "mouseup." + v.eventNameSpace;
-            v.iframes.off(e);
-            c(n).off(i);
-            c(n).off(t);
+            Q.plugin.unsetQueries();
+            Q.plugin.resetQueries();
+            Q.plugin.resetStyle(Q.iframes);
+            var e = "mousedown." + Q.eventNameSpace;
+            var i = "mousemove." + Q.eventNameSpace;
+            var s = "mouseup." + Q.eventNameSpace;
+            Q.iframes.off(e);
+            x(n).off(i);
+            x(n).off(s);
         },
         setIframeSize: function(e, i) {
-            var s = false;
             var a = false;
-            var t = v.iframes;
+            var t = false;
+            var s = Q.iframes;
             if (e) {
                 if (e.width) {
-                    s = e.width;
+                    a = e.width;
                 }
                 if (e.height) {
-                    a = e.height;
+                    t = e.height;
                 }
             }
-            if (i && i.length > 0 && c(i).is(c(v.plugin.options.containerSelector))) {
-                t = i;
+            if (i && i.length > 0 && x(i).is(x(Q.plugin.options.containerSelector))) {
+                s = i;
             }
-            if (s || a) {
-                c.each(t, function(e, i) {
-                    var t = c(i);
-                    if (s) {
-                        t.width(s);
-                    }
+            if (a || t) {
+                x.each(s, function(e, i) {
+                    var s = x(i);
                     if (a) {
-                        t.height(a);
+                        s.width(a);
                     }
-                    v.plugin.matchMediaQueries(t);
+                    if (t) {
+                        s.height(t);
+                    }
+                    Q.plugin.matchMediaQueries(s);
                 });
             }
         },
         resetIframesSize: function(e) {
-            var i = v.iframes;
-            if (e && c(e).is(c(v.plugin.options.containerSelector))) {
+            var i = Q.iframes;
+            if (e && x(e).is(x(Q.plugin.options.containerSelector))) {
                 i = e;
             }
-            c.each(i, function(e, i) {
-                var t = c(i);
-                v.plugin.resetStyle(t);
-                v.plugin.matchMediaQueries(t);
+            x.each(i, function(e, i) {
+                var s = x(i);
+                Q.plugin.resetStyle(s);
+                Q.plugin.matchMediaQueries(s);
             });
         },
         resetStyle: function(e) {
-            c.each(e, function(e, i) {
-                var t = c(i);
-                t.attr("style", "");
+            x.each(e, function(e, i) {
+                var s = x(i);
+                s.attr("style", "");
             });
         },
-        resetAttribute: function(e, t) {
-            c.each(e, function(e, i) {
-                $el = c(i);
-                $el.attr(t, "false");
+        resetAttribute: function(e, s) {
+            x.each(e, function(e, i) {
+                $el = x(i);
+                $el.attr(s, "false");
             });
         }
     });
-    c.fn[r] = function(e) {
+    x.fn[u] = function(e) {
         if (typeof arguments[0] === "string") {
             var i = arguments[0];
-            var t = Array.prototype.slice.call(arguments, 1);
-            var s = Array.prototype.slice.call(arguments, 2);
-            var a;
+            var s = Array.prototype.slice.call(arguments, 1);
+            var a = Array.prototype.slice.call(arguments, 2);
+            var t;
             this.each(function() {
-                if (c.data(this, "plugin_" + r) && typeof c.data(this, "plugin_" + r)[i] === "function") {
-                    a = c.data(this, "plugin_" + r)[i].apply(this, t, s);
+                if (x.data(this, "plugin_" + u) && typeof x.data(this, "plugin_" + u)[i] === "function") {
+                    t = x.data(this, "plugin_" + u)[i].apply(this, s, a);
                 } else {
-                    throw new Error("Method " + i + " does not exist on jQuery." + r);
+                    throw new Error("Method " + i + " does not exist on jQuery." + u);
                 }
             });
-            if (a !== l) {
-                return a;
+            if (t !== r) {
+                return t;
             } else {
                 return this;
             }
         } else if (typeof e === "object" || !e) {
             return this.each(function() {
-                if (!c.data(this, "plugin_" + r)) {
-                    c.data(this, "plugin_" + r, new o(this, e));
+                if (!x.data(this, "plugin_" + u)) {
+                    x.data(this, "plugin_" + u, new l(this, e));
                 }
             });
         }
